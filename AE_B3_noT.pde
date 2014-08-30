@@ -3,17 +3,26 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+color bg = color(255);
+
 int dWidth=1280;
 int dHeight=720;
 int numRcordings=0;
 
 int[] iterations;
 int rec = 0;
+float ang;
 
 color skeletonColor = 50;
 boolean first;
 
-boolean inHere = false;
+boolean inHere = true;
+
+MyButton doneButton;
+int doneButtonX = 1280 - 100;
+int doneButtonY = 0;
+int doneButtonWidth = 100;
+int doneButtonHeight = 50;
 
 void setup() {
   first = true;
@@ -31,19 +40,26 @@ void setup() {
   yTouch = new float [10]; // Don't use more than ten fingers
   sqrtL = new float[4]; 
   sqrtR = new float[4];
-
+  doneButton = new MyButton(doneButtonX, doneButtonY, doneButtonWidth, doneButtonHeight, "DONE");
   dataLoggerInit();
 }
-
 //-----------------------------------------------------------------------------------------
 
 void draw() {
   iter=0;// variable to store the actions
-  background(255);
+  background(bg);
+  strokeWeight(5);
+  stroke(255, 0, 0);
+  line(dWidth, whiteRightHandJointY, 0, whiteRightHandJointY);
   firstTrue();
-
-
   //drawBlueCirclesOnTouch();
+  doneButton.draw();
+  if (doneButton.isStopClicked())
+  {
+    bg = color(0);
+    reInitializeTouchPoints();
+    saveLoggedData();
+  }
   if (TouchEvents != 0)
     first = false;
   if (TouchEvents == 1)
@@ -51,7 +67,26 @@ void draw() {
   if (TouchEvents == 2)
     ifTouchEventIs2();
   if (TouchEvents == 4)
+  {
+    bg = color(0);
     saveLoggedData();
+  }
+
+
+
+  if ((degrees(angle2_)) < 0)
+    ang = 180+(degrees(angle2_));
+  else
+    ang = -180+(degrees(angle2_));
+
+  if (((ang < 2)&&
+    (ang > -2))
+    ||
+    (((-(degrees(angle1_))) < 2)&&
+    ((-(degrees(angle1_))) > -2)))
+  {
+    logData(0, 111111, 0, 111111);
+  }
 }
 
 void firstTrue() //white left body
@@ -59,8 +94,8 @@ void firstTrue() //white left body
   rectMode(CENTER);
   fill(skeletonColor);
   noStroke();
-  rect(whiteSkeletonX, whiteSkeletonY, 240, 240, 15);
-
+  //rect(whiteSkeletonX, whiteSkeletonY, 240, 240, 15);
+  rect(whiteSkeletonX, whiteSkeletonY, 160, 160, 15);
   if ((first == true))
   {   
     angle1_ = 0;

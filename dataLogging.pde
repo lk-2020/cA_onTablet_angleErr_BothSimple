@@ -26,5 +26,5 @@ void logData(int xL, int yL, int xR, int yR) {
 } 
 
 void saveLoggedData() { 
-  saveTable(table, "//sdcard/charAnim/testStudy.csv");
+  saveTable(table, "//sdcard/charAnim/withoutTangible_AE_B3.csv");
 }
